@@ -4,7 +4,7 @@
  */
 package faderesseanasther.Screens;
 
-import faderesseanasther.database.DBConnection;
+import DbConnection.DatabaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -165,44 +165,7 @@ public class LoginScreen extends javax.swing.JFrame {
             return;
         }
 
-        String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
-
-        // try-with-resources automatically closes Connection, PreparedStatement, ResultSet
-        try (Connection con = DBConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
-
-            pst.setString(1, username);
-            pst.setString(2, password);
-
-            try (ResultSet rs = pst.executeQuery()) {
-
-                if (rs.next()) {
-                    // Login successful
-                    JOptionPane.showMessageDialog(this,
-                            "Login successful! Welcome " + rs.getString("full_name"),
-                            "Success",
-                            JOptionPane.INFORMATION_MESSAGE);
-
-                    Dashboard ds = new Dashboard();
-                    ds.setVisible(true);
-                    this.dispose();
-                } else {
-                    // Login failed
-                    JOptionPane.showMessageDialog(this,
-                            "Invalid username or password!",
-                            "Login Failed",
-                            JOptionPane.ERROR_MESSAGE);
-                }
-
-            }
-
-        } catch (Exception e) {
-            // Only show database error if there really is an exception
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this,
-                    "Database error! " + e.getMessage(),
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-        }
+        
     }//GEN-LAST:event_loginBtnMouseClicked
 
     private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed

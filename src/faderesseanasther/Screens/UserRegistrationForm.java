@@ -5,7 +5,7 @@
 package faderesseanasther.Screens;
 
 
-import faderesseanasther.database.DBConnection;
+import DbConnection.DatabaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,7 +20,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class UserRegistrationForm extends javax.swing.JDialog {
 
-    private UserList userList;
+    private UsersManagementScreen userList;
     
    
     
@@ -33,10 +33,10 @@ public class UserRegistrationForm extends javax.swing.JDialog {
        
     }
     
-      public UserRegistrationForm(java.awt.Frame parent, boolean modal, UserList userList) {
+      public UserRegistrationForm(java.awt.Frame parent, boolean modal, UsersManagementScreen userList) {
         super(parent, modal);
         initComponents();
-       this.userList = (UserList) userList;
+       this.userList = (UsersManagementScreen) userList;
     }
 
     /**
@@ -143,12 +143,7 @@ public class UserRegistrationForm extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void registerBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registerBtnMouseClicked
-    if (registerUser()) {
-        if(userList != null){
-            userList.loadUsers();
-        }
-        dispose();
-    }
+    
     }//GEN-LAST:event_registerBtnMouseClicked
 
     private void registerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerBtnActionPerformed
@@ -182,7 +177,7 @@ private boolean registerUser() {
         return false;
     }
 
-    try (Connection con = DBConnection.getConnection()) {
+    try (Connection con = DatabaseConnection.dbConnection()) {
 
         // Check username
         String checkSql = "SELECT 1 FROM users WHERE username = ?";

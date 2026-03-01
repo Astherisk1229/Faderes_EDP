@@ -4,7 +4,7 @@
  */
 package faderesseanasther.Screens;
 import java.sql.PreparedStatement;
-import faderesseanasther.DatabaseConnection;
+import DbConnection.DatabaseConnection;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.ResultSet;

@@ -296,19 +296,19 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_logoutBtnMouseClicked
 
     private void jPanel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel9MouseClicked
-       UserList ul = new UserList();
+       UsersManagementScreen ul = new UsersManagementScreen();
        ul.setVisible(true);
        this.dispose();
     }//GEN-LAST:event_jPanel9MouseClicked
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
-       UserList ul = new UserList();
+       UsersManagementScreen ul = new UsersManagementScreen();
        ul.setVisible(true);
        this.dispose();
     }//GEN-LAST:event_jLabel5MouseClicked
 
     private void userListIconMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_userListIconMouseClicked
-       UserList ul = new UserList();
+       UsersManagementScreen ul = new UsersManagementScreen();
        ul.setVisible(true);
        this.dispose();
     }//GEN-LAST:event_userListIconMouseClicked

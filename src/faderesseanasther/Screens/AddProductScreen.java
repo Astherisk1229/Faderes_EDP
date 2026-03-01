@@ -9,7 +9,9 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 
-import faderesseanasther.DatabaseConnection;
+import DbConnection.DatabaseConnection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -50,10 +52,12 @@ public class AddProductScreen extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         cmbProdCategory = new javax.swing.JComboBox<>();
-        productIDField = new javax.swing.JTextField();
+        barcodeField = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        productIDField = new javax.swing.JTextField();
         jPanel7 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -76,9 +80,9 @@ public class AddProductScreen extends javax.swing.JFrame {
         productTbl = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1059, 780));
-        setMinimumSize(new java.awt.Dimension(1059, 780));
-        setPreferredSize(new java.awt.Dimension(1059, 780));
+        setMaximumSize(new java.awt.Dimension(1167, 780));
+        setMinimumSize(new java.awt.Dimension(1167, 780));
+        setPreferredSize(new java.awt.Dimension(1167, 780));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowActivated(java.awt.event.WindowEvent evt) {
                 formWindowActivated(evt);
@@ -96,7 +100,7 @@ public class AddProductScreen extends javax.swing.JFrame {
         jLabel1.setText("POS – Add Product");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 20, -1, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1060, 70));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1180, 70));
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setMaximumSize(new java.awt.Dimension(1059, 780));
@@ -134,9 +138,9 @@ public class AddProductScreen extends javax.swing.JFrame {
                 exitBtnMouseClicked(evt);
             }
         });
-        jPanel5.add(exitBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 20, -1, -1));
+        jPanel5.add(exitBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 20, -1, -1));
 
-        jPanel3.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 420, 1020, 60));
+        jPanel3.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 420, 1140, 60));
 
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -159,21 +163,24 @@ public class AddProductScreen extends javax.swing.JFrame {
         jLabel4.setText("Description");
         jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 90, 270, -1));
 
-        cmbProdCategory.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel2.add(cmbProdCategory, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 90, 300, -1));
-        jPanel2.add(productIDField, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 50, 300, -1));
+        jPanel2.add(cmbProdCategory, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 110, 300, -1));
+        jPanel2.add(barcodeField, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 80, 300, -1));
 
         jLabel5.setText("Product ID");
         jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 50, -1, 20));
 
         jLabel6.setText("Product Category");
-        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, -1, -1));
+        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, -1, -1));
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel7.setText("Product Information");
         jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
 
-        jPanel3.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 1020, 150));
+        jLabel16.setText("Barcode");
+        jPanel2.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 80, -1, -1));
+        jPanel2.add(productIDField, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 50, 300, -1));
+
+        jPanel3.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 1140, 150));
 
         jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -197,7 +204,7 @@ public class AddProductScreen extends javax.swing.JFrame {
         jPanel7.add(reorderLevelField, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 90, 390, -1));
         jPanel7.add(sellingPriceField, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 50, 390, -1));
 
-        jPanel3.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 1020, 120));
+        jPanel3.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 1140, 120));
 
         jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -221,13 +228,13 @@ public class AddProductScreen extends javax.swing.JFrame {
         jLabel15.setText("Unit of Measure");
         jPanel8.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 50, 90, 20));
 
-        cmbProdStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Active", "Inactive" }));
+        cmbProdStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Available", "Out of Stock" }));
         jPanel8.add(cmbProdStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 90, 290, -1));
 
         cmbUnitOfMeasure.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jPanel8.add(cmbUnitOfMeasure, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 50, 390, -1));
 
-        jPanel3.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, 1020, 130));
+        jPanel3.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, 1140, 130));
 
         productTbl.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -254,9 +261,9 @@ public class AddProductScreen extends javax.swing.JFrame {
             productTbl.getColumnModel().getColumn(0).setResizable(false);
         }
 
-        jPanel3.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 500, 1020, 200));
+        jPanel3.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 500, 1140, 200));
 
-        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1060, 780));
+        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1160, 780));
 
         pack();
         setLocationRelativeTo(null);
@@ -277,45 +284,126 @@ public class AddProductScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_exitBtnMouseClicked
 
     private void addProdBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProdBtnActionPerformed
-      Connection con = DatabaseConnection.dbConnection();
-      
-      String productID = productIDField.getText();
-      String productName = productNameField.getText();
-      String productCategory = cmbProdCategory.getSelectedItem().toString();
-      String desc = descriptionArea.getText();
-      double costPrice = Double.parseDouble(costPriceField.getText());
-      double sellingPrice =  Double.parseDouble(sellingPriceField.getText());
-      int stockQuantity = Integer.parseInt(quantityStockField.getText());
-      int reorderLevel =  Integer.parseInt(reorderLevelField.getText());
-      String supplierName = supplierNameField.getText();
-      String unitOfMeasure = cmbUnitOfMeasure.getSelectedItem().toString();
-      String status = cmbProdStatus.getSelectedItem().toString();
-      
-      try {
-          PreparedStatement pst = con.prepareStatement("INSERT into products(product_name, "
-                                                        + "description, barcode, unit_price, "
-                                                        + "cost_price, stock_quantity, reorder_level, "
-                                                        + "unit_of_measure, status, date_added)" + 
-                                                        "VALUSE(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-          pst.setString(1, productID);
-          pst.setString(2, productName);
-          pst.setString(3, productCategory);
-          pst.setString(4, desc);
-          pst.setString(5, supplierName);
-          pst.setDouble(6, sellingPrice);
-          pst.setDouble(7, costPrice);
-          pst.setInt(8, stockQuantity);
-          pst.setInt(9, reorderLevel);
-          pst.setString(10, unitOfMeasure);
-          pst.setString(11, status);
-          pst.setTimestamp(12, new Timestamp(System.currentTimeMillis()));
-          pst.executeUpdate();
-          
-          JOptionPane.showMessageDialog(null,"Product added successfully!");
-      }catch (SQLException e){
-          JOptionPane.showMessageDialog(null,"Database error:" + e.getMessage());
-      }
-              
+        Connection con = DatabaseConnection.dbConnection();
+
+        String productID = productIDField.getText().trim();
+        String barcode = barcodeField.getText().trim();
+        String productName = productNameField.getText().trim();
+        String desc = descriptionArea.getText().trim();
+
+        Object catObj = cmbProdCategory.getSelectedItem();
+        String unitOfMeasure = (cmbUnitOfMeasure.getSelectedItem() == null) ? "" : cmbUnitOfMeasure.getSelectedItem().toString().trim();
+        String uiStatus = (cmbProdStatus.getSelectedItem() == null) ? "" : cmbProdStatus.getSelectedItem().toString().trim();
+
+// --- REQUIRED FIELDS ---
+        if (productID.isEmpty() || productName.isEmpty() || catObj == null || unitOfMeasure.isEmpty() || uiStatus.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please fill in all required fields (Product ID, Name, Category, Unit, Status).");
+            return;
+        }
+
+// --- GET categoryId SAFELY (FK-safe) ---
+        
+// If it contains names, you MUST load real IDs from DB (ComboItem approach).
+        String categoryName = cmbProdCategory.getSelectedItem().toString();
+         int categoryId = 0;
+        try {
+           PreparedStatement pstCategory = con.prepareStatement("SELECT category_id FROM categories WHERE category_name = '"+categoryName+"'");
+           ResultSet rsCategory = pstCategory.executeQuery();
+           if(rsCategory.next()){
+               categoryId = rsCategory.getInt("category_id");
+           }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null,
+                    "Invalid category selected. Please load categories from the database (category_id)");
+            return;
+        } catch (SQLException ex) {
+            Logger.getLogger(AddProductScreen.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+// --- PARSE NUMBERS SAFELY ---
+        double costPrice, sellingPrice;
+        int stockQuantity, reorderLevel;
+
+        try {
+            if (costPriceField.getText().trim().isEmpty()
+                    || sellingPriceField.getText().trim().isEmpty()
+                    || quantityStockField.getText().trim().isEmpty()
+                    || reorderLevelField.getText().trim().isEmpty()) {
+
+                JOptionPane.showMessageDialog(null, "Cost Price, Selling Price, Stock Quantity, and Reorder Level are required.");
+                return;
+            }
+
+            costPrice = Double.parseDouble(costPriceField.getText().trim());
+            sellingPrice = Double.parseDouble(sellingPriceField.getText().trim());
+            stockQuantity = Integer.parseInt(quantityStockField.getText().trim());
+            reorderLevel = Integer.parseInt(reorderLevelField.getText().trim());
+
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Please enter valid numeric values for prices and quantities.");
+            return;
+        }
+
+// --- BUSINESS RULES ---
+        if (costPrice < 0 || sellingPrice < 0) {
+            JOptionPane.showMessageDialog(null, "Cost Price and Selling Price must be 0 or greater.");
+            return;
+        }
+        if (stockQuantity < 0 || reorderLevel < 0) {
+            JOptionPane.showMessageDialog(null, "Stock Quantity and Reorder Level must be 0 or greater.");
+            return;
+        }
+        if (sellingPrice < costPrice) {
+            JOptionPane.showMessageDialog(null, "Selling Price should not be lower than Cost Price.");
+            return;
+        }
+        if (!barcode.isEmpty() && barcode.length() < 4) {
+            JOptionPane.showMessageDialog(null, "Barcode looks too short. Please check it.");
+            return;
+        }
+
+// --- STATUS MAPPING (prevents 'data truncated' if DB expects Active/Inactive) ---
+        
+        String dbStatus;
+        if (uiStatus.equalsIgnoreCase("Available")) {
+            dbStatus = "Active";
+        } else if (uiStatus.equalsIgnoreCase("Out of Stock")) {
+            dbStatus = "Inactive";
+        } else {
+            // fallback to avoid invalid ENUM / short varchar
+            dbStatus = "Active";
+        }
+
+// --- INSERT ---
+        
+        String sql = "INSERT INTO products (product_id, product_name, description, category_id, barcode, "
+                + "unit_price, cost_price, stock_quantity, reorder_level, unit_of_measure, status, date_added) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setString(1, productID);
+            pst.setString(2, productName);
+            pst.setString(3, desc);
+            pst.setInt(4, categoryId);
+            pst.setString(5, barcode);
+            pst.setDouble(6, sellingPrice);
+            pst.setDouble(7, costPrice);
+            pst.setInt(8, stockQuantity);
+            pst.setInt(9, reorderLevel);
+            pst.setString(10, unitOfMeasure);
+            pst.setString(11, dbStatus);
+            pst.setTimestamp(12, new Timestamp(System.currentTimeMillis()));
+
+            pst.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Product added successfully!");
+            clearFields();
+            loadProductsToTable();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Database error: " + e.getMessage());
+        }
     }//GEN-LAST:event_addProdBtnActionPerformed
 
     private void clearBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearBtnMouseClicked
@@ -323,35 +411,83 @@ public class AddProductScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_clearBtnMouseClicked
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+      
         Connection con = DatabaseConnection.dbConnection();
-        PreparedStatement pst;
-        ResultSet rs;
+
         DefaultTableModel dtm = (DefaultTableModel) productTbl.getModel();
         dtm.setRowCount(0);
-        try{
-            pst = con.prepareStatement("SELECT * FROM products ORDER BY product_name ASC");
-            rs = pst.executeQuery();
-            while(rs.next()){
-                Object obj[] = {rs.getInt("product_id"),
-                                rs.getString("product_name"),
-                                rs.getString("description"),
-                                rs.getDouble("unit_price"),
-                                rs.getDouble("cost_price"),
-                                rs.getInt("stock_quantity"),
-                                rs.getInt("reorder_level"),
-                                rs.getString("unit_of_measure"),
-                                rs.getDate("date_added")
+
+        // -------- 1) Load Products into Table --------
+        String sqlProducts = "SELECT product_id, product_name, description, category_id, barcode, unit_price, cost_price, "
+                + "stock_quantity, reorder_level, unit_of_measure, status, date_added "
+                + "FROM products ORDER BY product_name ASC";
+
+        try (PreparedStatement pst1 = con.prepareStatement(sqlProducts); 
+                ResultSet rs = pst1.executeQuery()) {
+
+            while (rs.next()) {
+                Object[] obj = {
+                    rs.getInt("product_id"),
+                    rs.getString("product_name"),
+                    rs.getString("description"),
+                    rs.getInt("category_id"),
+                    rs.getString("barcode"),
+                    rs.getDouble("unit_price"),
+                    rs.getDouble("cost_price"),
+                    rs.getInt("stock_quantity"),
+                    rs.getInt("reorder_level"),
+                    rs.getString("unit_of_measure"),
+                    rs.getString("status"),
+                    rs.getTimestamp("date_added")
                 };
+                dtm.addRow(obj);
             }
+
+        } catch (SQLException ex) {
+            System.out.println("Load products error: " + ex.getMessage());
         }
-        catch(SQLException ex){
-            System.out.println(ex);
+
+        
+        // -------- 2) Populate cmbProdCategory from categories table --------
+        String sqlCategories = "SELECT category_id, category_name FROM categories ORDER BY category_name ASC";
+        try (PreparedStatement pst2 = con.prepareStatement(sqlCategories); ResultSet rsCat = pst2.executeQuery()) {
+            cmbProdCategory.removeAllItems();
+            while (rsCat.next()) {
+                int id = rsCat.getInt("category_id");
+                cmbProdCategory.addItem(rsCat.getString("category_name"));
+            }
+        } catch (SQLException ex) {
+            System.out.println("Load categories error: " + ex.getMessage());
         }
+
+        
+        
+        // -------- 3) Populate cmbProdStatus from products.status column --------
+        String sqlStatus = "SELECT DISTINCT status FROM products WHERE status IS NOT NULL AND status <> '' ORDER BY status ASC";
+
+        try (PreparedStatement pst3 = con.prepareStatement(sqlStatus); ResultSet rsStatus = pst3.executeQuery()) {
+
+            cmbProdStatus.removeAllItems();
+
+            while (rsStatus.next()) {
+                cmbProdStatus.addItem(rsStatus.getString("status"));
+            }
+
+            // Optional fallback if there are no rows yet in products table
+            if (cmbProdStatus.getItemCount() == 0) {
+                cmbProdStatus.addItem("Active");
+                cmbProdStatus.addItem("Inactive");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Load status error: " + ex.getMessage());
+        }
+       
     }//GEN-LAST:event_formWindowActivated
 
     
      private void clearFields(){
-         productIDField.setText("");
+         barcodeField.setText("");
          productNameField.setText("");
          cmbProdCategory.setSelectedItem(0);
          descriptionArea.setText("");
@@ -364,7 +500,42 @@ public class AddProductScreen extends javax.swing.JFrame {
          cmbProdStatus.setSelectedItem(0);
    }
     
+     
+    private void loadProductsToTable() {
+        Connection con = DatabaseConnection.dbConnection();
+        DefaultTableModel dtm = (DefaultTableModel) productTbl.getModel();
+        dtm.setRowCount(0);
+
+        String sql = "SELECT product_id, product_name, description, category_id, barcode, unit_price, cost_price, "
+                + "stock_quantity, reorder_level, unit_of_measure, status, date_added "
+                + "FROM products ORDER BY product_name ASC";
+
+        try (PreparedStatement pst = con.prepareStatement(sql); ResultSet rs = pst.executeQuery()) {
+
+            while (rs.next()) {
+                Object obj[] = {
+                    rs.getString("product_id"),
+                    rs.getString("product_name"),
+                    rs.getString("description"),
+                    rs.getInt("category_id"),
+                    rs.getString("barcode"),
+                    rs.getDouble("unit_price"),
+                    rs.getDouble("cost_price"),
+                    rs.getInt("stock_quantity"),
+                    rs.getInt("reorder_level"),
+                    rs.getString("unit_of_measure"),
+                    rs.getString("status"),
+                    rs.getTimestamp("date_added")
+                };
+                dtm.addRow(obj);
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Load error: " + ex.getMessage());
+        }
+    }
     
+
     /**
      * @param args the command line arguments
      */
@@ -403,6 +574,7 @@ public class AddProductScreen extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addProdBtn;
+    private javax.swing.JTextField barcodeField;
     private javax.swing.JButton clearBtn;
     private javax.swing.JComboBox<String> cmbProdCategory;
     private javax.swing.JComboBox<String> cmbProdStatus;
@@ -417,6 +589,7 @@ public class AddProductScreen extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
