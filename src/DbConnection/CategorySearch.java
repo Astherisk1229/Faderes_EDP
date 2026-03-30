@@ -36,7 +36,7 @@ public class CategorySearch {
 
         try (PreparedStatement pst = con.prepareStatement(sql)) {
 
-            for (int i = 1; i <= 3; i++) {
+            for (int i = 1; i <= 2; i++) {
                 pst.setString(i, "%" + keyword + "%");
             }
 

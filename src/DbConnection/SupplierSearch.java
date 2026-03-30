@@ -23,7 +23,7 @@ public class SupplierSearch {
         dtm.setRowCount(0);
         
         if (keyword == null || keyword.trim().isEmpty()){
-            loadUsersToTable(table);
+            loadSuppliersToTable(table);
             return;
         }
         
@@ -46,14 +46,12 @@ public class SupplierSearch {
 
             while (rs.next()) {
                 Object[] row = {
-                    rs.getInt("user_id"),
-                    rs.getString("first_name"),
-                    rs.getString("middle_name"),
-                    rs.getString("last_name"),
-                    rs.getString("username"),
-                    rs.getString("password"),
-                    rs.getString("role"),
-                    rs.getString("status"),
+                    rs.getInt("supplier_id"),
+                    rs.getString("name"),
+                    rs.getString("contact_person"),
+                    rs.getString("contact_number"),
+                    rs.getString("email"),
+                    rs.getString("address"),
                     rs.getTimestamp("created_at"),
                     rs.getTimestamp("updated_at")
                 };
@@ -67,25 +65,24 @@ public class SupplierSearch {
     }
     
     
-public static void loadUsersToTable(JTable table) {
+public static void loadSuppliersToTable(JTable table) {
         Connection con = DatabaseConnection.dbConnection();
         DefaultTableModel dtm = (DefaultTableModel) table.getModel();
         dtm.setRowCount(0);
 
-        String sql = "SELECT user_id, first_name, middle_name, last_name, username, role, status, created_at, updated_at FROM users ORDER BY user_id ASC";
+        String sql = "SELECT supplier_id, name, contact_person, contact_number, email, address, created_at, updated_at FROM suppliers ORDER BY supplier_id ASC";
         
 
         try (PreparedStatement pst = con.prepareStatement(sql); ResultSet rs = pst.executeQuery()) {
 
             while (rs.next()) {
                 Object obj[] = {
-                    rs.getString("user_id"),
-                    rs.getString("first_name"),
-                    rs.getString("middle_name"),
-                    rs.getString("last_name"),
-                    rs.getString("username"),
-                    rs.getString("role"),
-                    rs.getString("status"),
+                    rs.getString("supplier_id"),
+                    rs.getString("name"),
+                    rs.getString("contact_person"),
+                    rs.getString("contact_number"),
+                    rs.getString("email"),
+                    rs.getString("address"),
                     rs.getTimestamp("created_at"),
                     rs.getTimestamp("updated_at")
                 };

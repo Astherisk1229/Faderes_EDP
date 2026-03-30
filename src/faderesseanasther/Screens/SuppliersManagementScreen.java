@@ -6,11 +6,16 @@ package faderesseanasther.Screens;
 
 import DbConnection.DatabaseConnection;
 import DbConnection.ClearFields;
+import DbConnection.ComboItem;
 import java.awt.Color;
 import DbConnection.SupplierSearch;
+import java.awt.Font;
 import java.sql.Connection;
 import javax.swing.JOptionPane;
 import java.sql.*;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -18,11 +23,27 @@ import java.sql.*;
  */
 public class SuppliersManagementScreen extends javax.swing.JFrame {
 
+    private boolean editMode = false;
+    private boolean rowLoaded = false;
+    private int selectedSupplierId = -1;
+
+    private String originalSupplierName = "";
+    private String originalContactPerson = "";
+    private String originalContactNumber = "";
+    private String originalEmail = "";
+    private String originalAddress = "";
+
     /**
      * Creates new form SuppliersManagementScreen
      */
     public SuppliersManagementScreen() {
         initComponents();
+        updateSupplierBtn.setEnabled(false);
+        deleteSupplierBtn.setEnabled(false);
+        cancelBtn.setEnabled(false);
+        label.setText("Ready: Add mode");
+        supplierTbl.setEnabled(false);
+        setupTableRowClick();
     }
 
     /**
@@ -36,37 +57,38 @@ public class SuppliersManagementScreen extends javax.swing.JFrame {
 
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 32767));
         jPanel1 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        backIcon = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        supplierDetails = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        supplierDetails2 = new javax.swing.JPanel();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
         supplierNameField = new javax.swing.JTextField();
-        contactPersonField = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        createCategoryBtn = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
         contactNumberField = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        contactPersonField = new javax.swing.JTextField();
+        jLabel18 = new javax.swing.JLabel();
         addressField = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
         emailAddressField = new javax.swing.JTextField();
+        addSupplierBtn = new javax.swing.JButton();
+        updateSupplierBtn = new javax.swing.JButton();
+        deleteSupplierBtn = new javax.swing.JButton();
+        clearFieldsBtn = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        supplierListTbl = new javax.swing.JTable();
-        searchField = new javax.swing.JTextField();
+        supplierTbl = new javax.swing.JTable();
+        jPanel2 = new javax.swing.JPanel();
         searchButton = new javax.swing.JButton();
+        searchField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        statusCmb = new javax.swing.JComboBox<>();
-        addNewUserBtn = new javax.swing.JButton();
-        editUserBtn = new javax.swing.JButton();
-        addUserBtn2 = new javax.swing.JButton();
+        editBtn = new javax.swing.JButton();
+        label = new javax.swing.JLabel();
+        cancelBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(239, 243, 254));
-        setMaximumSize(new java.awt.Dimension(1370, 720));
-        setMinimumSize(new java.awt.Dimension(1370, 720));
-        setPreferredSize(new java.awt.Dimension(1370, 720));
+        setMinimumSize(new java.awt.Dimension(1570, 820));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowActivated(java.awt.event.WindowEvent evt) {
                 formWindowActivated(evt);
@@ -75,41 +97,25 @@ public class SuppliersManagementScreen extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(239, 243, 254));
-        jPanel1.setMaximumSize(new java.awt.Dimension(1370, 720));
-        jPanel1.setMinimumSize(new java.awt.Dimension(1370, 720));
+        jPanel1.setMaximumSize(new java.awt.Dimension(1570, 820));
+        jPanel1.setMinimumSize(new java.awt.Dimension(1570, 820));
         jPanel1.setName(""); // NOI18N
-        jPanel1.setPreferredSize(new java.awt.Dimension(1370, 720));
+        jPanel1.setPreferredSize(new java.awt.Dimension(1570, 820));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel3.setBackground(new java.awt.Color(255, 181, 36));
-        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel4.setBackground(new java.awt.Color(44, 62, 80));
+        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        backIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/faderesseanasther/Icons/arrow.png"))); // NOI18N
-        backIcon.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                backIconMouseClicked(evt);
-            }
-        });
-        jPanel3.add(backIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, 40, -1));
+        supplierDetails2.setBackground(new java.awt.Color(255, 255, 255));
+        supplierDetails2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 28)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(1, 12, 74));
-        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel11.setText("Suppliers Management ");
-        jPanel3.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 40, -1, -1));
+        jLabel15.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel15.setText("Contact Number");
+        supplierDetails2.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 230, 120, -1));
 
-        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1370, 110));
-
-        supplierDetails.setBackground(new java.awt.Color(255, 255, 255));
-        supplierDetails.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel7.setText("Contact Person");
-        supplierDetails.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 50, 120, -1));
-
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel4.setText("Supplier Name");
-        supplierDetails.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, 120, -1));
+        jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel16.setText("Supplier Name");
+        supplierDetails2.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 50, 120, -1));
 
         supplierNameField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         supplierNameField.addActionListener(new java.awt.event.ActionListener() {
@@ -117,39 +123,7 @@ public class SuppliersManagementScreen extends javax.swing.JFrame {
                 supplierNameFieldActionPerformed(evt);
             }
         });
-        supplierDetails.add(supplierNameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 70, 400, -1));
-
-        contactPersonField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        contactPersonField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                contactPersonFieldActionPerformed(evt);
-            }
-        });
-        supplierDetails.add(contactPersonField, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 70, 400, -1));
-
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(1, 12, 74));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Supplier Details");
-        supplierDetails.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, -1, -1));
-
-        createCategoryBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        createCategoryBtn.setText("Create");
-        createCategoryBtn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                createCategoryBtnMouseClicked(evt);
-            }
-        });
-        createCategoryBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                createCategoryBtnActionPerformed(evt);
-            }
-        });
-        supplierDetails.add(createCategoryBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 210, 130, 30));
-
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel5.setText("Contact Number");
-        supplierDetails.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 110, 120, -1));
+        supplierDetails2.add(supplierNameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 260, -1));
 
         contactNumberField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         contactNumberField.addActionListener(new java.awt.event.ActionListener() {
@@ -157,11 +131,29 @@ public class SuppliersManagementScreen extends javax.swing.JFrame {
                 contactNumberFieldActionPerformed(evt);
             }
         });
-        supplierDetails.add(contactNumberField, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 130, 400, -1));
+        supplierDetails2.add(contactNumberField, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 250, 260, -1));
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel6.setText("Address");
-        supplierDetails.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 110, 120, -1));
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(1, 12, 74));
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("SUPPLIER DETAILS");
+        supplierDetails2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
+
+        jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel17.setText("Contact Person");
+        supplierDetails2.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 110, 120, -1));
+
+        contactPersonField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        contactPersonField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                contactPersonFieldActionPerformed(evt);
+            }
+        });
+        supplierDetails2.add(contactPersonField, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 130, 260, -1));
+
+        jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel18.setText("Address");
+        supplierDetails2.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 290, 120, -1));
 
         addressField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         addressField.addActionListener(new java.awt.event.ActionListener() {
@@ -169,11 +161,11 @@ public class SuppliersManagementScreen extends javax.swing.JFrame {
                 addressFieldActionPerformed(evt);
             }
         });
-        supplierDetails.add(addressField, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 130, 400, -1));
+        supplierDetails2.add(addressField, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 310, 260, -1));
 
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel8.setText("Email Address");
-        supplierDetails.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 170, 120, -1));
+        jLabel19.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel19.setText("Email Address");
+        supplierDetails2.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 170, 120, -1));
 
         emailAddressField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         emailAddressField.addActionListener(new java.awt.event.ActionListener() {
@@ -181,12 +173,83 @@ public class SuppliersManagementScreen extends javax.swing.JFrame {
                 emailAddressFieldActionPerformed(evt);
             }
         });
-        supplierDetails.add(emailAddressField, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 190, 400, -1));
+        supplierDetails2.add(emailAddressField, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 190, 260, -1));
 
-        jPanel1.add(supplierDetails, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 140, 1040, 260));
+        addSupplierBtn.setBackground(new java.awt.Color(41, 75, 107));
+        addSupplierBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        addSupplierBtn.setForeground(new java.awt.Color(255, 255, 255));
+        addSupplierBtn.setText("Add");
+        addSupplierBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addSupplierBtnMouseClicked(evt);
+            }
+        });
+        addSupplierBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addSupplierBtnActionPerformed(evt);
+            }
+        });
+        supplierDetails2.add(addSupplierBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 370, 90, 30));
 
-        supplierListTbl.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        supplierListTbl.setModel(new javax.swing.table.DefaultTableModel(
+        updateSupplierBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        updateSupplierBtn.setText("Update");
+        updateSupplierBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                updateSupplierBtnMouseClicked(evt);
+            }
+        });
+        updateSupplierBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateSupplierBtnActionPerformed(evt);
+            }
+        });
+        supplierDetails2.add(updateSupplierBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 370, 80, 30));
+
+        deleteSupplierBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        deleteSupplierBtn.setText("Delete");
+        deleteSupplierBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                deleteSupplierBtnMouseClicked(evt);
+            }
+        });
+        deleteSupplierBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteSupplierBtnActionPerformed(evt);
+            }
+        });
+        supplierDetails2.add(deleteSupplierBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 370, 80, 30));
+
+        clearFieldsBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        clearFieldsBtn.setText("Clear");
+        clearFieldsBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                clearFieldsBtnMouseClicked(evt);
+            }
+        });
+        clearFieldsBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearFieldsBtnActionPerformed(evt);
+            }
+        });
+        supplierDetails2.add(clearFieldsBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 370, 80, 30));
+
+        jPanel4.add(supplierDetails2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 400, 450));
+
+        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 200, 420, 470));
+
+        jPanel3.setBackground(new java.awt.Color(44, 62, 80));
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 28)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel11.setText("SUPPLIER MANAGEMENT");
+        jPanel3.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 20, -1, -1));
+
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1570, 70));
+
+        supplierTbl.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        supplierTbl.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -202,26 +265,27 @@ public class SuppliersManagementScreen extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        supplierListTbl.getTableHeader().setReorderingAllowed(false);
-        jScrollPane3.setViewportView(supplierListTbl);
-        if (supplierListTbl.getColumnModel().getColumnCount() > 0) {
-            supplierListTbl.getColumnModel().getColumn(0).setResizable(false);
-            supplierListTbl.getColumnModel().getColumn(1).setResizable(false);
-            supplierListTbl.getColumnModel().getColumn(2).setResizable(false);
-            supplierListTbl.getColumnModel().getColumn(3).setResizable(false);
-            supplierListTbl.getColumnModel().getColumn(4).setResizable(false);
-            supplierListTbl.getColumnModel().getColumn(5).setResizable(false);
-            supplierListTbl.getColumnModel().getColumn(6).setResizable(false);
-            supplierListTbl.getColumnModel().getColumn(7).setResizable(false);
+        supplierTbl.getTableHeader().setReorderingAllowed(false);
+        jScrollPane3.setViewportView(supplierTbl);
+        if (supplierTbl.getColumnModel().getColumnCount() > 0) {
+            supplierTbl.getColumnModel().getColumn(0).setResizable(false);
+            supplierTbl.getColumnModel().getColumn(1).setResizable(false);
+            supplierTbl.getColumnModel().getColumn(2).setResizable(false);
+            supplierTbl.getColumnModel().getColumn(3).setResizable(false);
+            supplierTbl.getColumnModel().getColumn(4).setResizable(false);
+            supplierTbl.getColumnModel().getColumn(5).setResizable(false);
+            supplierTbl.getColumnModel().getColumn(6).setResizable(false);
+            supplierTbl.getColumnModel().getColumn(7).setResizable(false);
         }
 
-        jPanel1.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 480, 1290, 190));
+        jPanel1.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 310, 750, 360));
 
-        searchField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jPanel1.add(searchField, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 440, 300, -1));
+        jPanel2.setBackground(new java.awt.Color(44, 62, 80));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        searchButton.setBackground(new java.awt.Color(255, 181, 36));
+        searchButton.setBackground(new java.awt.Color(41, 75, 107));
         searchButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        searchButton.setForeground(new java.awt.Color(255, 255, 255));
         searchButton.setText("Search");
         searchButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -242,205 +306,437 @@ public class SuppliersManagementScreen extends javax.swing.JFrame {
                 searchButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(searchButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 440, -1, -1));
+        jPanel2.add(searchButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 20, 80, -1));
+
+        searchField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        searchField.setForeground(new java.awt.Color(255, 255, 255));
+        jPanel2.add(searchField, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 20, 280, -1));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Search");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 440, 120, -1));
+        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 100, -1));
 
-        statusCmb.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        statusCmb.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Active", "Inactive" }));
-        jPanel1.add(statusCmb, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 440, -1, -1));
-
-        addNewUserBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        addNewUserBtn.setText("Add");
-        addNewUserBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+        editBtn.setBackground(new java.awt.Color(239, 243, 254));
+        editBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        editBtn.setText("Edit");
+        editBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                addNewUserBtnMouseClicked(evt);
+                editBtnMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                editBtnMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                editBtnMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                editBtnMousePressed(evt);
             }
         });
-        addNewUserBtn.addActionListener(new java.awt.event.ActionListener() {
+        editBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addNewUserBtnActionPerformed(evt);
+                editBtnActionPerformed(evt);
             }
         });
-        jPanel1.add(addNewUserBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 440, 130, 30));
+        jPanel2.add(editBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 20, -1, -1));
 
-        editUserBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        editUserBtn.setText("Edit");
-        editUserBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 250, 750, 60));
+
+        label.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jPanel1.add(label, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 210, 310, 30));
+
+        cancelBtn.setBackground(new java.awt.Color(239, 243, 254));
+        cancelBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        cancelBtn.setText("Cancel");
+        cancelBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                editUserBtnMouseClicked(evt);
+                cancelBtnMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                cancelBtnMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                cancelBtnMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                cancelBtnMousePressed(evt);
             }
         });
-        editUserBtn.addActionListener(new java.awt.event.ActionListener() {
+        cancelBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editUserBtnActionPerformed(evt);
+                cancelBtnActionPerformed(evt);
             }
         });
-        jPanel1.add(editUserBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 440, 130, 30));
+        jPanel1.add(cancelBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(1140, 210, 80, -1));
 
-        addUserBtn2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        addUserBtn2.setText("Update");
-        addUserBtn2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                addUserBtn2MouseClicked(evt);
-            }
-        });
-        addUserBtn2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addUserBtn2ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(addUserBtn2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1200, 440, 130, 30));
-
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1370, 720));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1570, -1));
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-        // TODO add your handling code here:
+        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+        DefaultTableModel dtm = (DefaultTableModel) supplierTbl.getModel();
+        dtm.setRowCount(0);
+        SupplierSearch.loadSuppliersToTable(supplierTbl);
     }//GEN-LAST:event_formWindowActivated
 
-    private void backIconMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backIconMouseClicked
-        Dashboard ds = new Dashboard();
-        ds.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_backIconMouseClicked
+    private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
+        editMode = false;
+        rowLoaded = false;
+        selectedSupplierId = -1;
 
-    private void supplierNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_supplierNameFieldActionPerformed
+        originalSupplierName = "";
+        originalContactPerson = "";
+        originalContactNumber = "";
+        originalEmail = "";
+        originalAddress = "";
+
+        updateSupplierBtn.setEnabled(false);
+        deleteSupplierBtn.setEnabled(false);
+        addSupplierBtn.setEnabled(true);
+        supplierTbl.setEnabled(false);
+        supplierTbl.clearSelection();
+        cancelBtn.setEnabled(false);
+        clearFieldsBtn.setText("Clear");
+        clearFields();
+        label.setText("Ready: Add mode");
+    }//GEN-LAST:event_cancelBtnActionPerformed
+
+    private void cancelBtnMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelBtnMousePressed
+
+    }//GEN-LAST:event_cancelBtnMousePressed
+
+    private void cancelBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelBtnMouseExited
+
+    }//GEN-LAST:event_cancelBtnMouseExited
+
+    private void cancelBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelBtnMouseEntered
+
+    }//GEN-LAST:event_cancelBtnMouseEntered
+
+    private void cancelBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelBtnMouseClicked
+
+    }//GEN-LAST:event_cancelBtnMouseClicked
+
+    private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed
+        editMode = true;
+        rowLoaded = false;
+        selectedSupplierId = -1;
+
+        cancelBtn.setEnabled(true);
+        addSupplierBtn.setEnabled(false);
+        updateSupplierBtn.setEnabled(false);
+        deleteSupplierBtn.setEnabled(false);
+        supplierTbl.setEnabled(true);
+        supplierTbl.clearSelection();
+
+        clearFieldsBtn.setText("Clear");
+        label.setText("Edit mode: click a row to load supplier data.");
+    }//GEN-LAST:event_editBtnActionPerformed
+
+    private void editBtnMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editBtnMousePressed
         // TODO add your handling code here:
-    }//GEN-LAST:event_supplierNameFieldActionPerformed
+    }//GEN-LAST:event_editBtnMousePressed
 
-    private void contactPersonFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contactPersonFieldActionPerformed
+    private void editBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editBtnMouseExited
         // TODO add your handling code here:
-    }//GEN-LAST:event_contactPersonFieldActionPerformed
+    }//GEN-LAST:event_editBtnMouseExited
 
-    private void createCategoryBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_createCategoryBtnMouseClicked
-        Connection con = DatabaseConnection.dbConnection();
-        String categoryName = supplierNameField.getText().trim();
-        String description = contactPersonField.getText().trim();
-
-        if (categoryName.isEmpty() || description.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Please fill in all required fields (First name, Last name, Username, Password, Role).");
-            return;
-        }
-
-        String sql = "INSERT INTO categories (name, description, created_at) VALUES (?,?,?)";
-
-        try (PreparedStatement pstCategories = con.prepareStatement(sql)) {
-
-            pstCategories.setString(1, categoryName);
-            pstCategories.setString(2, description);
-            pstCategories.setTimestamp(3, new java.sql.Timestamp(System.currentTimeMillis()));
-            pstCategories.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Category added successfully!");
-            ClearFields.clear(supplierDetails);
-            SupplierSearch.loadSuppliersToTable(supplierListTbl);
-
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Load error: " + ex.getMessage());
-        }
-    }//GEN-LAST:event_createCategoryBtnMouseClicked
-
-    private void createCategoryBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createCategoryBtnActionPerformed
-
-    }//GEN-LAST:event_createCategoryBtnActionPerformed
-
-    private void contactNumberFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contactNumberFieldActionPerformed
+    private void editBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editBtnMouseEntered
         // TODO add your handling code here:
-    }//GEN-LAST:event_contactNumberFieldActionPerformed
+    }//GEN-LAST:event_editBtnMouseEntered
 
-    private void addressFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addressFieldActionPerformed
+    private void editBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editBtnMouseClicked
+
+    }//GEN-LAST:event_editBtnMouseClicked
+
+    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_addressFieldActionPerformed
-
-    private void emailAddressFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailAddressFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_emailAddressFieldActionPerformed
-
-    private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
-        SupplierSearch.searchSuppliers(supplierListTbl, searchField.getText());
-    }//GEN-LAST:event_searchButtonMouseClicked
-
-    private void searchButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseEntered
-        searchButton.setBackground(new Color(255, 255, 204));
-    }//GEN-LAST:event_searchButtonMouseEntered
-
-    private void searchButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseExited
-        searchButton.setBackground(new Color(255, 181, 36));
-    }//GEN-LAST:event_searchButtonMouseExited
+    }//GEN-LAST:event_searchButtonActionPerformed
 
     private void searchButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMousePressed
         searchButton.setBackground(new Color(255, 181, 36));
     }//GEN-LAST:event_searchButtonMousePressed
 
-    private void addNewUserBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addNewUserBtnMouseClicked
+    private void searchButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseExited
+        searchButton.setBackground(new Color(255, 181, 36));
+    }//GEN-LAST:event_searchButtonMouseExited
+
+    private void searchButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseEntered
+        searchButton.setBackground(new Color(255, 255, 204));
+    }//GEN-LAST:event_searchButtonMouseEntered
+
+    private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
+        SupplierSearch.searchSuppliers(supplierTbl, searchField.getText());
+    }//GEN-LAST:event_searchButtonMouseClicked
+
+    private void clearFieldsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearFieldsBtnActionPerformed
+        if (rowLoaded) {
+            resetLoadedSupplierFields();
+            label.setText("Fields reset to original saved data.");
+            return;
+        }
+
+        clearFields();
+        label.setText("Fields cleared.");
+    }//GEN-LAST:event_clearFieldsBtnActionPerformed
+
+    private void clearFieldsBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearFieldsBtnMouseClicked
+
+    }//GEN-LAST:event_clearFieldsBtnMouseClicked
+
+    private void deleteSupplierBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSupplierBtnActionPerformed
+        if (!editMode || !rowLoaded || selectedSupplierId == -1) {
+            JOptionPane.showMessageDialog(this, "Click Edit first, then select a supplier row.");
+            return;
+        }
+
+        int confirm = JOptionPane.showConfirmDialog(
+                this,
+                "Delete this supplier?",
+                "Confirm Delete",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (confirm != JOptionPane.YES_OPTION) {
+            return;
+        }
+
+        Connection con = DatabaseConnection.dbConnection();
+
+        String sql = "DELETE FROM suppliers WHERE supplier_id = ?";
+
+        try (PreparedStatement pst = con.prepareStatement(sql)) {
+            pst.setInt(1, selectedSupplierId);
+            pst.executeUpdate();
+
+            JOptionPane.showMessageDialog(this, "Supplier deleted successfully.");
+            clearFields();
+            SupplierSearch.loadSuppliersToTable(supplierTbl);
+
+            editMode = false;
+            rowLoaded = false;
+            selectedSupplierId = -1;
+
+            originalSupplierName = "";
+            originalContactPerson = "";
+            originalContactNumber = "";
+            originalEmail = "";
+            originalAddress = "";
+
+            updateSupplierBtn.setEnabled(false);
+            deleteSupplierBtn.setEnabled(false);
+            addSupplierBtn.setEnabled(true);
+            supplierTbl.setEnabled(false);
+            supplierTbl.clearSelection();
+            cancelBtn.setEnabled(false);
+            clearFieldsBtn.setText("Clear");
+            label.setText("Ready: Add mode");
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Delete supplier error: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_deleteSupplierBtnActionPerformed
+
+    private void deleteSupplierBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteSupplierBtnMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_deleteSupplierBtnMouseClicked
+
+    private void updateSupplierBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateSupplierBtnActionPerformed
+        if (!editMode || !rowLoaded || selectedSupplierId == -1) {
+            JOptionPane.showMessageDialog(this, "Click Edit first, then select a supplier row.");
+            return;
+        }
+
         Connection con = DatabaseConnection.dbConnection();
 
         String supplierName = supplierNameField.getText().trim();
         String contactPerson = contactPersonField.getText().trim();
         String contactNumber = contactNumberField.getText().trim();
-
+        String email = emailAddressField.getText().trim();
         String address = addressField.getText().trim();
-        String emailAdd = emailAddressField.getText().trim();
 
-       
-
-  
-
-        if (supplierName.isEmpty() || contactPerson.isEmpty() || contactNumber.isEmpty() || address.isEmpty() || emailAdd.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Please fill in all required fields (Supplier Name, Contact Person, Contact Number, Email Address, Address).");
+        if (supplierName.isEmpty() || contactPerson.isEmpty() || contactNumber.isEmpty()
+                || email.isEmpty() || address.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please fill in all required fields.");
             return;
         }
 
-        String sql = "INSERT INTO suppliers (name, contact_person, contact_number, email,"
-                + " address, created_at, updated_at) VALUES (?,?,?,?,?,?,?)";
+        String sql = "UPDATE suppliers SET name = ?, contact_person = ?, contact_number = ?, "
+                + "email = ?, address = ?, updated_at = ? WHERE supplier_id = ?";
 
-        try (PreparedStatement pstUsers = con.prepareStatement(sql)) {
+        try (PreparedStatement pst = con.prepareStatement(sql)) {
+            pst.setString(1, supplierName);
+            pst.setString(2, contactPerson);
+            pst.setString(3, contactNumber);
+            pst.setString(4, email);
+            pst.setString(5, address);
+            pst.setTimestamp(6, new Timestamp(System.currentTimeMillis()));
+            pst.setInt(7, selectedSupplierId);
 
-            pstUsers.setString(1, supplierName);
-            pstUsers.setString(2, contactPerson);
-            pstUsers.setString(3, contactNumber);
-            pstUsers.setString(4, emailAdd);
-            pstUsers.setString(5, address);
-            pstUsers.setTimestamp(6, new Timestamp(System.currentTimeMillis()));
-            pstUsers.setTimestamp(7, new Timestamp(System.currentTimeMillis()));
-            pstUsers.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Supplier created successfully!");
-            ClearFields.clear(supplierDetails);
-            loadUsersToTable();
+            pst.executeUpdate();
+
+            JOptionPane.showMessageDialog(this, "Supplier updated successfully.");
+            clearFields();
+            SupplierSearch.loadSuppliersToTable(supplierTbl);
+
+            editMode = false;
+            rowLoaded = false;
+            selectedSupplierId = -1;
+
+            originalSupplierName = "";
+            originalContactPerson = "";
+            originalContactNumber = "";
+            originalEmail = "";
+            originalAddress = "";
+
+            updateSupplierBtn.setEnabled(false);
+            deleteSupplierBtn.setEnabled(false);
+            addSupplierBtn.setEnabled(true);
+            supplierTbl.setEnabled(false);
+            supplierTbl.clearSelection();
+            cancelBtn.setEnabled(false);
+            clearFieldsBtn.setText("Clear");
+            label.setText("Ready: Add mode");
+            
+            
 
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Load error: " + ex.getMessage());
+            JOptionPane.showMessageDialog(this, "Update supplier error: " + ex.getMessage());
         }
-    }//GEN-LAST:event_addNewUserBtnMouseClicked
+    }//GEN-LAST:event_updateSupplierBtnActionPerformed
 
-    private void addNewUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewUserBtnActionPerformed
-
-    }//GEN-LAST:event_addNewUserBtnActionPerformed
-
-    private void editUserBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editUserBtnMouseClicked
+    private void updateSupplierBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateSupplierBtnMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_editUserBtnMouseClicked
+    }//GEN-LAST:event_updateSupplierBtnMouseClicked
 
-    private void editUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editUserBtnActionPerformed
+    private void addSupplierBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSupplierBtnActionPerformed
+        Connection con = DatabaseConnection.dbConnection();
+
+        String supplierName = supplierNameField.getText().trim();
+        String contactPerson = contactPersonField.getText().trim();
+        String contactNumber = contactNumberField.getText().trim();
+        String email = emailAddressField.getText().trim();
+        String address = addressField.getText().trim();
+
+        if (supplierName.isEmpty() || contactPerson.isEmpty() || contactNumber.isEmpty()
+                || email.isEmpty() || address.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please fill in all required fields.");
+            return;
+        }
+
+        String sql = "INSERT INTO suppliers "
+                + "(name, contact_person, contact_number, email, address, created_at, updated_at) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement pst = con.prepareStatement(sql)) {
+            Timestamp now = new Timestamp(System.currentTimeMillis());
+
+            pst.setString(1, supplierName);
+            pst.setString(2, contactPerson);
+            pst.setString(3, contactNumber);
+            pst.setString(4, email);
+            pst.setString(5, address);
+            pst.setTimestamp(6, now);
+            pst.setTimestamp(7, now);
+
+            pst.executeUpdate();
+
+            JOptionPane.showMessageDialog(this, "Supplier added successfully.");
+            clearFields();
+            clearFieldsBtn.setText("Clear");
+            SupplierSearch.loadSuppliersToTable(supplierTbl);
+            label.setText("Ready: Add mode");
+           
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Add supplier error: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_addSupplierBtnActionPerformed
+
+    private void addSupplierBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addSupplierBtnMouseClicked
+
+    }//GEN-LAST:event_addSupplierBtnMouseClicked
+
+    private void emailAddressFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailAddressFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_editUserBtnActionPerformed
+    }//GEN-LAST:event_emailAddressFieldActionPerformed
 
-    private void addUserBtn2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addUserBtn2MouseClicked
-
-    }//GEN-LAST:event_addUserBtn2MouseClicked
-
-    private void addUserBtn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addUserBtn2ActionPerformed
+    private void addressFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addressFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_addUserBtn2ActionPerformed
+    }//GEN-LAST:event_addressFieldActionPerformed
 
-    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
+    private void contactPersonFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contactPersonFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_searchButtonActionPerformed
+    }//GEN-LAST:event_contactPersonFieldActionPerformed
+
+    private void contactNumberFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contactNumberFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_contactNumberFieldActionPerformed
+
+    private void supplierNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_supplierNameFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_supplierNameFieldActionPerformed
+
+    private void setupTableRowClick() {
+        supplierTbl.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (!editMode) {
+                    JOptionPane.showMessageDialog(null, "Click Edit first before selecting a row.");
+                    supplierTbl.clearSelection();
+                    return;
+                }
+
+                int row = supplierTbl.getSelectedRow();
+                if (row == -1) {
+                    return;
+                }
+
+                DefaultTableModel model = (DefaultTableModel) supplierTbl.getModel();
+
+                selectedSupplierId = Integer.parseInt(model.getValueAt(row, 0).toString());
+
+                originalSupplierName = model.getValueAt(row, 1).toString();
+                originalContactPerson = model.getValueAt(row, 2).toString();
+                originalContactNumber = model.getValueAt(row, 3).toString();
+                originalEmail = model.getValueAt(row, 4).toString();
+                originalAddress = model.getValueAt(row, 5).toString();
+
+                supplierNameField.setText(originalSupplierName);
+                contactPersonField.setText(originalContactPerson);
+                contactNumberField.setText(originalContactNumber);
+                emailAddressField.setText(originalEmail);
+                addressField.setText(originalAddress);
+
+                rowLoaded = true;
+                updateSupplierBtn.setEnabled(true);
+                deleteSupplierBtn.setEnabled(true);
+                clearFieldsBtn.setText("Reset");
+                label.setText("Supplier row loaded. You may now update, delete, or reset.");
+            }
+        });
+    }
+
+    
+    private void resetLoadedSupplierFields() {
+        supplierNameField.setText(originalSupplierName);
+        contactPersonField.setText(originalContactPerson);
+        contactNumberField.setText(originalContactNumber);
+        emailAddressField.setText(originalEmail);
+        addressField.setText(originalAddress);
+    }
+    private void clearFields() {
+        supplierNameField.setText("");
+        contactPersonField.setText("");
+        contactNumberField.setText("");
+
+        emailAddressField.setText("");
+        addressField.setText("");
+    }
 
     /**
      * @param args the command line arguments
@@ -478,32 +774,35 @@ public class SuppliersManagementScreen extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addNewUserBtn;
-    private javax.swing.JButton addUserBtn2;
+    private javax.swing.JButton addSupplierBtn;
     private javax.swing.JTextField addressField;
-    private javax.swing.JLabel backIcon;
+    private javax.swing.JButton cancelBtn;
+    private javax.swing.JButton clearFieldsBtn;
     private javax.swing.JTextField contactNumberField;
     private javax.swing.JTextField contactPersonField;
-    private javax.swing.JButton createCategoryBtn;
-    private javax.swing.JButton editUserBtn;
+    private javax.swing.JButton deleteSupplierBtn;
+    private javax.swing.JButton editBtn;
     private javax.swing.JTextField emailAddressField;
     private javax.swing.Box.Filler filler1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel label;
     private javax.swing.JButton searchButton;
     private javax.swing.JTextField searchField;
-    private javax.swing.JComboBox<String> statusCmb;
-    private javax.swing.JPanel supplierDetails;
-    private javax.swing.JTable supplierListTbl;
+    private javax.swing.JPanel supplierDetails2;
     private javax.swing.JTextField supplierNameField;
+    private javax.swing.JTable supplierTbl;
+    private javax.swing.JButton updateSupplierBtn;
     // End of variables declaration//GEN-END:variables
 }

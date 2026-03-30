@@ -19,7 +19,22 @@ import javax.swing.table.DefaultTableModel;
  * @author Admin
  */
 public class CategoriesManagementScreen extends javax.swing.JFrame {
+// Default sidebar background
 
+    Color sidebarDefault = new Color(51, 68, 100);
+
+// Hover color
+    Color sidebarHover = new Color(59, 76, 107);
+
+// Selected / clicked color
+    Color sidebarSelected = new Color(70, 110, 190);
+
+// Optional darker top/header shade
+    Color sidebarDark = new Color(24, 32, 46);
+    
+   
+
+    
     /**
      * Creates new form CategoriesManagementScreen
      */
@@ -37,9 +52,9 @@ public class CategoriesManagementScreen extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        backIcon = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        categoryListTbl = new javax.swing.JTable();
+        jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -47,17 +62,20 @@ public class CategoriesManagementScreen extends javax.swing.JFrame {
         descriptionField = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         createCategoryBtn = new javax.swing.JButton();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        categoryListTbl = new javax.swing.JTable();
-        searchField = new javax.swing.JTextField();
-        searchButton = new javax.swing.JButton();
+        updateCategoryBtn = new javax.swing.JButton();
+        deleteCategoryBtn = new javax.swing.JButton();
+        clearBtn = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        editUserBtn = new javax.swing.JButton();
-        addUserBtn2 = new javax.swing.JButton();
+        searchField = new javax.swing.JTextField();
+        searchButton1 = new javax.swing.JButton();
+        addUserBtn5 = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
+        searchButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1370, 720));
-        setMinimumSize(new java.awt.Dimension(1370, 720));
+        setMinimumSize(new java.awt.Dimension(1567, 819));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowActivated(java.awt.event.WindowEvent evt) {
                 formWindowActivated(evt);
@@ -66,75 +84,10 @@ public class CategoriesManagementScreen extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(239, 243, 254));
+        jPanel1.setMaximumSize(new java.awt.Dimension(1570, 820));
+        jPanel1.setMinimumSize(new java.awt.Dimension(1570, 820));
+        jPanel1.setPreferredSize(new java.awt.Dimension(1570, 820));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jPanel3.setBackground(new java.awt.Color(255, 181, 36));
-        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        backIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/faderesseanasther/Icons/arrow.png"))); // NOI18N
-        backIcon.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                backIconMouseClicked(evt);
-            }
-        });
-        jPanel3.add(backIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, 40, -1));
-
-        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 28)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(1, 12, 74));
-        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel11.setText("Categories Management ");
-        jPanel3.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 40, -1, -1));
-
-        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1370, 110));
-
-        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel7.setText("Description");
-        jPanel5.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 110, 120, -1));
-
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel4.setText("Category Name");
-        jPanel5.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, 120, -1));
-
-        categoryNameField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        categoryNameField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                categoryNameFieldActionPerformed(evt);
-            }
-        });
-        jPanel5.add(categoryNameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 70, 400, -1));
-
-        descriptionField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        descriptionField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                descriptionFieldActionPerformed(evt);
-            }
-        });
-        jPanel5.add(descriptionField, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 130, 400, -1));
-
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(1, 12, 74));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Category Details");
-        jPanel5.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, -1, -1));
-
-        createCategoryBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        createCategoryBtn.setText("Create");
-        createCategoryBtn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                createCategoryBtnMouseClicked(evt);
-            }
-        });
-        createCategoryBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                createCategoryBtnActionPerformed(evt);
-            }
-        });
-        jPanel5.add(createCategoryBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 180, 130, 30));
-
-        jPanel1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 150, 490, 220));
 
         categoryListTbl.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         categoryListTbl.setModel(new javax.swing.table.DefaultTableModel(
@@ -163,14 +116,171 @@ public class CategoriesManagementScreen extends javax.swing.JFrame {
             categoryListTbl.getColumnModel().getColumn(4).setResizable(false);
         }
 
-        jPanel1.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 480, 1290, 210));
+        jPanel1.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 500, 900, 250));
+
+        jPanel4.setBackground(new java.awt.Color(44, 62, 80));
+        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel5.setBackground(new java.awt.Color(239, 243, 254));
+        jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel7.setText("Description");
+        jPanel5.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 110, 120, -1));
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel4.setText("Category Name");
+        jPanel5.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, 120, -1));
+
+        categoryNameField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        categoryNameField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                categoryNameFieldActionPerformed(evt);
+            }
+        });
+        jPanel5.add(categoryNameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 70, 520, -1));
+
+        descriptionField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        descriptionField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                descriptionFieldActionPerformed(evt);
+            }
+        });
+        jPanel5.add(descriptionField, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 130, 520, -1));
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(1, 12, 74));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Category Details");
+        jPanel5.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, -1, -1));
+
+        createCategoryBtn.setBackground(new java.awt.Color(41, 75, 107));
+        createCategoryBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        createCategoryBtn.setForeground(new java.awt.Color(255, 255, 255));
+        createCategoryBtn.setText("Add");
+        createCategoryBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                createCategoryBtnMouseClicked(evt);
+            }
+        });
+        createCategoryBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createCategoryBtnActionPerformed(evt);
+            }
+        });
+        jPanel5.add(createCategoryBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 170, 80, 30));
+
+        updateCategoryBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        updateCategoryBtn.setText("Update");
+        updateCategoryBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                updateCategoryBtnMouseClicked(evt);
+            }
+        });
+        updateCategoryBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateCategoryBtnActionPerformed(evt);
+            }
+        });
+        jPanel5.add(updateCategoryBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 170, 80, 30));
+
+        deleteCategoryBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        deleteCategoryBtn.setText("Delete");
+        deleteCategoryBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                deleteCategoryBtnMouseClicked(evt);
+            }
+        });
+        deleteCategoryBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteCategoryBtnActionPerformed(evt);
+            }
+        });
+        jPanel5.add(deleteCategoryBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 170, 80, 30));
+
+        clearBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        clearBtn.setText("Clear");
+        clearBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                clearBtnMouseClicked(evt);
+            }
+        });
+        clearBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearBtnActionPerformed(evt);
+            }
+        });
+        jPanel5.add(clearBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 170, 80, 30));
+
+        jPanel4.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 620, 220));
+
+        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 120, 640, 240));
+
+        jPanel2.setBackground(new java.awt.Color(44, 62, 80));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Search");
+        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 120, -1));
 
         searchField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jPanel1.add(searchField, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 430, 300, -1));
+        jPanel2.add(searchField, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, 300, -1));
 
-        searchButton.setBackground(new java.awt.Color(255, 181, 36));
+        searchButton1.setBackground(new java.awt.Color(239, 243, 254));
+        searchButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        searchButton1.setText("Search");
+        searchButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                searchButton1MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                searchButton1MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                searchButton1MouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                searchButton1MousePressed(evt);
+            }
+        });
+        searchButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchButton1ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(searchButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 20, -1, -1));
+
+        addUserBtn5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        addUserBtn5.setText("Edit");
+        addUserBtn5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addUserBtn5MouseClicked(evt);
+            }
+        });
+        addUserBtn5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addUserBtn5ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(addUserBtn5, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 20, 80, 30));
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 440, 900, 60));
+
+        jPanel3.setBackground(new java.awt.Color(44, 62, 80));
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 28)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel11.setText("CATEGORIES MANAGEMENT");
+        jPanel3.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 20, -1, -1));
+
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1570, 70));
+
+        searchButton.setBackground(new java.awt.Color(239, 243, 254));
         searchButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        searchButton.setText("Search");
+        searchButton.setText("Cancel");
         searchButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 searchButtonMouseClicked(evt);
@@ -190,50 +300,13 @@ public class CategoriesManagementScreen extends javax.swing.JFrame {
                 searchButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(searchButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 430, -1, -1));
+        jPanel1.add(searchButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 400, -1, -1));
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel3.setText("Search");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 430, 120, -1));
-
-        editUserBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        editUserBtn.setText("Edit");
-        editUserBtn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                editUserBtnMouseClicked(evt);
-            }
-        });
-        editUserBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editUserBtnActionPerformed(evt);
-            }
-        });
-        jPanel1.add(editUserBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 430, 130, 30));
-
-        addUserBtn2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        addUserBtn2.setText("Update");
-        addUserBtn2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                addUserBtn2MouseClicked(evt);
-            }
-        });
-        addUserBtn2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addUserBtn2ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(addUserBtn2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1200, 430, 130, 30));
-
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1370, 720));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1570, 820));
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void backIconMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backIconMouseClicked
-        Dashboard ds = new Dashboard();
-        ds.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_backIconMouseClicked
 
     private void categoryNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categoryNameFieldActionPerformed
         // TODO add your handling code here:
@@ -291,38 +364,71 @@ public class CategoriesManagementScreen extends javax.swing.JFrame {
 
     }//GEN-LAST:event_createCategoryBtnActionPerformed
 
-    private void editUserBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editUserBtnMouseClicked
+    private void updateCategoryBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateCategoryBtnMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_editUserBtnMouseClicked
+    }//GEN-LAST:event_updateCategoryBtnMouseClicked
 
-    private void editUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editUserBtnActionPerformed
+    private void updateCategoryBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateCategoryBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_editUserBtnActionPerformed
+    }//GEN-LAST:event_updateCategoryBtnActionPerformed
 
-    private void addUserBtn2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addUserBtn2MouseClicked
+    private void clearBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearBtnMouseClicked
 
-    }//GEN-LAST:event_addUserBtn2MouseClicked
+    }//GEN-LAST:event_clearBtnMouseClicked
 
-    private void addUserBtn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addUserBtn2ActionPerformed
+    private void clearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_addUserBtn2ActionPerformed
+    }//GEN-LAST:event_clearBtnActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-         DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
         DefaultTableModel dtm = (DefaultTableModel) categoryListTbl.getModel();
-         headerRenderer.setFont(new Font("Times New Roman", Font.BOLD
-        , 13));
-        headerRenderer.setBackground(new Color(239, 198, 46));
-        for (int i = 0; i < categoryListTbl.getModel().getColumnCount(); i++){
-            categoryListTbl.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
-        }
+      
         dtm.setRowCount(0);
         CategorySearch.loadCategoriesToTable(categoryListTbl);
+        
+        
     }//GEN-LAST:event_formWindowActivated
+
+    private void deleteCategoryBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteCategoryBtnMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_deleteCategoryBtnMouseClicked
+
+    private void deleteCategoryBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteCategoryBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_deleteCategoryBtnActionPerformed
+
+    private void searchButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButton1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchButton1MouseClicked
+
+    private void searchButton1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButton1MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchButton1MouseEntered
+
+    private void searchButton1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButton1MouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchButton1MouseExited
+
+    private void searchButton1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButton1MousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchButton1MousePressed
+
+    private void searchButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchButton1ActionPerformed
+
+    private void addUserBtn5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addUserBtn5MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addUserBtn5MouseClicked
+
+    private void addUserBtn5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addUserBtn5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addUserBtn5ActionPerformed
 
     
     
@@ -366,23 +472,27 @@ public class CategoriesManagementScreen extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addUserBtn2;
-    private javax.swing.JLabel backIcon;
+    private javax.swing.JButton addUserBtn5;
     private javax.swing.JTable categoryListTbl;
     private javax.swing.JTextField categoryNameField;
+    private javax.swing.JButton clearBtn;
     private javax.swing.JButton createCategoryBtn;
+    private javax.swing.JButton deleteCategoryBtn;
     private javax.swing.JTextField descriptionField;
-    private javax.swing.JButton editUserBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JButton searchButton;
+    private javax.swing.JButton searchButton1;
     private javax.swing.JTextField searchField;
+    private javax.swing.JButton updateCategoryBtn;
     // End of variables declaration//GEN-END:variables
 }

@@ -19,19 +19,33 @@ import javax.swing.table.DefaultTableModel;
  */
 public class UsersManagementScreen extends javax.swing.JFrame {
 
-    
-    
+    private boolean editMode = false;
+    private boolean rowLoaded = false;
+    private int selectedUserId = -1;
+
+    private String originalFirstName = "";
+    private String originalMiddleName = "";
+    private String originalLastName = "";
+    private String originalUsername = "";
+    private String originalPassword = "";
+    private String originalRole = "";
+    private String originalStatus = "";
+
     /**
      * Creates new form UserList
      */
     public UsersManagementScreen() {
         initComponents();
-        
+
+        updateBtn.setEnabled(false); // Update
+        deleteBtn.setEnabled(false); // Delete
+        cancelBtn.setEnabled(false); // Cancel
+        userListTbl.setEnabled(false);
+
+        label.setText("Ready: Add mode");
+        setupTableRowClick();
     }
 
-    
-    
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -44,34 +58,39 @@ public class UsersManagementScreen extends javax.swing.JFrame {
         jDialog1 = new javax.swing.JDialog();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        firstNameField = new javax.swing.JTextField();
-        middleNameField = new javax.swing.JTextField();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        lastNameField = new javax.swing.JTextField();
-        roleCmb = new javax.swing.JComboBox<>();
-        passwordField = new javax.swing.JPasswordField();
-        jLabel8 = new javax.swing.JLabel();
-        usernameField = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
-        backIcon = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        addUserBtn2 = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         userListTbl = new javax.swing.JTable();
-        jLabel3 = new javax.swing.JLabel();
-        addNewUserBtn = new javax.swing.JButton();
-        editUserBtn = new javax.swing.JButton();
-        jLabel9 = new javax.swing.JLabel();
-        statusCmb = new javax.swing.JComboBox<>();
-        searchButton = new javax.swing.JButton();
-        searchField = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
+        jPanel7 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        firstNameField = new javax.swing.JTextField();
+        middleNameField = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        lastNameField = new javax.swing.JTextField();
+        jLabel17 = new javax.swing.JLabel();
+        usernameField = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        roleCmb = new javax.swing.JComboBox<>();
+        jLabel8 = new javax.swing.JLabel();
+        passwordField = new javax.swing.JPasswordField();
+        addNewUserBtn = new javax.swing.JButton();
+        clearBtn = new javax.swing.JButton();
+        updateBtn = new javax.swing.JButton();
+        deleteBtn = new javax.swing.JButton();
+        jPanel8 = new javax.swing.JPanel();
+        searchField = new javax.swing.JTextField();
+        searchButton = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        statusCmb = new javax.swing.JComboBox<>();
+        jLabel9 = new javax.swing.JLabel();
+        editUserBtn = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
+        label = new javax.swing.JLabel();
+        cancelBtn = new javax.swing.JButton();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -85,7 +104,7 @@ public class UsersManagementScreen extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(1366, 768));
+        setMinimumSize(new java.awt.Dimension(1570, 820));
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowActivated(java.awt.event.WindowEvent evt) {
@@ -95,113 +114,13 @@ public class UsersManagementScreen extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(239, 243, 254));
-        jPanel1.setMaximumSize(new java.awt.Dimension(1370, 720));
+        jPanel1.setMaximumSize(new java.awt.Dimension(1570, 820));
+        jPanel1.setMinimumSize(new java.awt.Dimension(1570, 820));
+        jPanel1.setPreferredSize(new java.awt.Dimension(1570, 820));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1370, -1));
-
-        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel7.setText("Middle Name");
-        jPanel5.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 110, 120, -1));
-
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel4.setText("First Name");
-        jPanel5.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, 120, -1));
-
-        firstNameField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        firstNameField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                firstNameFieldActionPerformed(evt);
-            }
-        });
-        jPanel5.add(firstNameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 70, 400, -1));
-
-        middleNameField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        middleNameField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                middleNameFieldActionPerformed(evt);
-            }
-        });
-        jPanel5.add(middleNameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 130, 400, -1));
-
-        jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel10.setText("Role");
-        jPanel5.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 110, 120, -1));
-
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel5.setText("Last Name");
-        jPanel5.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 50, 120, -1));
-
-        lastNameField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lastNameField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                lastNameFieldActionPerformed(evt);
-            }
-        });
-        jPanel5.add(lastNameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 70, 400, -1));
-
-        roleCmb.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        roleCmb.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Super Admin", "Manager", "Cashier", "Inventory Clerk" }));
-        jPanel5.add(roleCmb, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 130, 400, -1));
-
-        passwordField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jPanel5.add(passwordField, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 190, 400, -1));
-
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel8.setText("Password");
-        jPanel5.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 170, 120, -1));
-
-        usernameField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jPanel5.add(usernameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 190, 400, -1));
-
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel6.setText("Username");
-        jPanel5.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 170, 120, -1));
-
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(1, 12, 74));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("User Details");
-        jPanel5.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, -1, -1));
-
-        jPanel1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 140, 1110, 250));
-
-        jPanel3.setBackground(new java.awt.Color(255, 181, 36));
-        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        backIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/faderesseanasther/Icons/arrow.png"))); // NOI18N
-        backIcon.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                backIconMouseClicked(evt);
-            }
-        });
-        jPanel3.add(backIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, 40, -1));
-
-        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 28)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(1, 12, 74));
-        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel11.setText("User Management ");
-        jPanel3.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 40, -1, -1));
-
-        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1370, 110));
-
-        addUserBtn2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        addUserBtn2.setText("Update");
-        addUserBtn2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                addUserBtn2MouseClicked(evt);
-            }
-        });
-        addUserBtn2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addUserBtn2ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(addUserBtn2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1200, 460, 130, 30));
 
         userListTbl.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         userListTbl.setModel(new javax.swing.table.DefaultTableModel(
@@ -234,13 +153,84 @@ public class UsersManagementScreen extends javax.swing.JFrame {
             userListTbl.getColumnModel().getColumn(8).setResizable(false);
         }
 
-        jPanel1.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 510, 1290, 210));
+        jPanel1.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 550, 1060, 200));
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel3.setText("Search");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 460, 120, -1));
+        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 260, 1020, -1));
 
+        jPanel7.setBackground(new java.awt.Color(44, 62, 80));
+        jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel6.setBackground(new java.awt.Color(239, 243, 254));
+        jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel12.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel12.setText("Middle Name");
+        jPanel6.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, 120, -1));
+
+        jLabel13.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel13.setText("First Name");
+        jPanel6.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, 120, -1));
+
+        firstNameField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        firstNameField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                firstNameFieldActionPerformed(evt);
+            }
+        });
+        jPanel6.add(firstNameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 70, 270, -1));
+
+        middleNameField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        middleNameField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                middleNameFieldActionPerformed(evt);
+            }
+        });
+        jPanel6.add(middleNameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 120, 270, -1));
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(1, 12, 74));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("User Details");
+        jPanel6.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, -1, -1));
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel5.setText("Last Name");
+        jPanel6.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 150, 120, -1));
+
+        lastNameField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lastNameField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lastNameFieldActionPerformed(evt);
+            }
+        });
+        jPanel6.add(lastNameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 170, 270, -1));
+
+        jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel17.setText("Username");
+        jPanel6.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 50, 120, -1));
+
+        usernameField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jPanel6.add(usernameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 70, 270, -1));
+
+        jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel10.setText("Role");
+        jPanel6.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 100, 120, -1));
+
+        roleCmb.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        roleCmb.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Super Admin", "Manager", "Cashier", "Inventory Clerk" }));
+        jPanel6.add(roleCmb, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 120, 270, -1));
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel8.setText("Password");
+        jPanel6.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 150, 120, -1));
+
+        passwordField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jPanel6.add(passwordField, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 170, 270, -1));
+
+        addNewUserBtn.setBackground(new java.awt.Color(41, 75, 107));
         addNewUserBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        addNewUserBtn.setForeground(new java.awt.Color(255, 255, 255));
         addNewUserBtn.setText("Add");
         addNewUserBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -252,32 +242,63 @@ public class UsersManagementScreen extends javax.swing.JFrame {
                 addNewUserBtnActionPerformed(evt);
             }
         });
-        jPanel1.add(addNewUserBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 460, 130, 30));
+        jPanel6.add(addNewUserBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 220, 100, 30));
 
-        editUserBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        editUserBtn.setText("Edit");
-        editUserBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+        clearBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        clearBtn.setText("Clear");
+        clearBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                editUserBtnMouseClicked(evt);
+                clearBtnMouseClicked(evt);
             }
         });
-        editUserBtn.addActionListener(new java.awt.event.ActionListener() {
+        clearBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editUserBtnActionPerformed(evt);
+                clearBtnActionPerformed(evt);
             }
         });
-        jPanel1.add(editUserBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 460, 130, 30));
+        jPanel6.add(clearBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 220, 100, 30));
 
-        jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel9.setText("Status");
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 460, 50, 30));
+        updateBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        updateBtn.setText("Update");
+        updateBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                updateBtnMouseClicked(evt);
+            }
+        });
+        updateBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateBtnActionPerformed(evt);
+            }
+        });
+        jPanel6.add(updateBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 220, 100, 30));
 
-        statusCmb.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        statusCmb.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Active", "Inactive" }));
-        jPanel1.add(statusCmb, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 460, -1, -1));
+        deleteBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        deleteBtn.setText("Delete");
+        deleteBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                deleteBtnMouseClicked(evt);
+            }
+        });
+        deleteBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteBtnActionPerformed(evt);
+            }
+        });
+        jPanel6.add(deleteBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 220, 100, 30));
 
-        searchButton.setBackground(new java.awt.Color(255, 181, 36));
+        jPanel7.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 670, 270));
+
+        jPanel1.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 120, 690, 290));
+
+        jPanel8.setBackground(new java.awt.Color(44, 62, 80));
+        jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        searchField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jPanel8.add(searchField, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 20, 300, -1));
+
+        searchButton.setBackground(new java.awt.Color(41, 75, 107));
         searchButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        searchButton.setForeground(new java.awt.Color(255, 255, 255));
         searchButton.setText("Search");
         searchButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -293,96 +314,143 @@ public class UsersManagementScreen extends javax.swing.JFrame {
                 searchButtonMousePressed(evt);
             }
         });
-        jPanel1.add(searchButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 460, -1, -1));
+        searchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchButtonActionPerformed(evt);
+            }
+        });
+        jPanel8.add(searchButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 20, -1, -1));
 
-        searchField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jPanel1.add(searchField, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 460, 300, -1));
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Search");
+        jPanel8.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 120, -1));
 
-        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 260, 1020, -1));
+        statusCmb.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        statusCmb.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Active", "Inactive" }));
+        jPanel8.add(statusCmb, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 20, -1, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1370, 770));
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("Status");
+        jPanel8.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 20, 50, 20));
+
+        editUserBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        editUserBtn.setText("Edit");
+        editUserBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                editUserBtnMouseClicked(evt);
+            }
+        });
+        editUserBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editUserBtnActionPerformed(evt);
+            }
+        });
+        jPanel8.add(editUserBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 20, 100, 30));
+
+        jPanel1.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 490, 1060, 60));
+
+        jPanel3.setBackground(new java.awt.Color(44, 62, 80));
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 28)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel11.setText("USER MANAGEMENT");
+        jPanel3.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 20, -1, -1));
+
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1570, 70));
+
+        label.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jPanel1.add(label, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 420, 360, 30));
+
+        cancelBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        cancelBtn.setText("Cancel");
+        cancelBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cancelBtnMouseClicked(evt);
+            }
+        });
+        cancelBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelBtnActionPerformed(evt);
+            }
+        });
+        jPanel1.add(cancelBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 450, 80, 30));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 0, 1500, 820));
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void addUserBtn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addUserBtn2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_addUserBtn2ActionPerformed
+    private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
+        returnToAddMode();
+    }//GEN-LAST:event_cancelBtnActionPerformed
 
-    private void addUserBtn2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addUserBtn2MouseClicked
-    
-    }//GEN-LAST:event_addUserBtn2MouseClicked
+    private void cancelBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelBtnMouseClicked
 
-    private void backIconMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backIconMouseClicked
-        Dashboard ds = new Dashboard();
-        ds.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_backIconMouseClicked
+    }//GEN-LAST:event_cancelBtnMouseClicked
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
         DefaultTableModel dtm = (DefaultTableModel) userListTbl.getModel();
-         headerRenderer.setFont(new Font("Times New Roman", Font.BOLD
-        , 13));
+        headerRenderer.setFont(new Font("Times New Roman", Font.BOLD,
+                13));
         headerRenderer.setBackground(new Color(239, 198, 46));
-        for (int i = 0; i < userListTbl.getModel().getColumnCount(); i++){
+        for (int i = 0; i < userListTbl.getModel().getColumnCount(); i++) {
             userListTbl.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
         }
         dtm.setRowCount(0);
         loadUsersToTable();
     }//GEN-LAST:event_formWindowActivated
 
-    private void lastNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lastNameFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_lastNameFieldActionPerformed
-
     private void addNewUserBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addNewUserBtnMouseClicked
-         Connection con = DatabaseConnection.dbConnection();
-       String firstName = firstNameField.getText().trim();
-       String middleName = middleNameField.getText().trim();
-       String lastName = lastNameField.getText().trim();
-       String username = usernameField.getText().trim();
-       String password = new String(passwordField.getPassword()).trim();
-       String role = roleCmb.getSelectedItem().toString().trim();
-       String status = statusCmb.getSelectedItem().toString().trim();
-       
-       
-       if (firstName.isEmpty() || middleName.isEmpty() || lastName == null || username.isEmpty() || password.isEmpty() || role.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Please fill in all required fields (First name, Last name, Username, Password, Role).");
-            return;
-        }
-       
-       
-        
-        String sql = "INSERT INTO users (first_name, middle_name, last_name, username,"
-                + " password, role, status, created_at) VALUES (?,?,?,?,?,?,?,?)";
-        
-        try(PreparedStatement pstUsers = con.prepareStatement(sql)){
-               
-                    pstUsers.setString(1, firstName);
-                    pstUsers.setString(2, middleName);
-                    pstUsers.setString(3, lastName);
-                    pstUsers.setString(4, username);
-                    pstUsers.setString(5, password);
-                    pstUsers.setString(6, role);
-                    pstUsers.setString(7, status);
-                    pstUsers.setTimestamp(8, new Timestamp(System.currentTimeMillis()));
-                    
-                    
-                    pstUsers.executeUpdate();
-                    JOptionPane.showMessageDialog(null, "Product added successfully!");
-                    clearFields();
-                    loadUsersToTable();
-        
-        }catch(SQLException ex){
-             JOptionPane.showMessageDialog(null, "Load error: " + ex.getMessage());
-        }
+
     }//GEN-LAST:event_addNewUserBtnMouseClicked
 
     private void addNewUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewUserBtnActionPerformed
-      
+        Connection con = DatabaseConnection.dbConnection();
+
+        String firstName = firstNameField.getText().trim();
+        String middleName = middleNameField.getText().trim();
+        String lastName = lastNameField.getText().trim();
+        String username = usernameField.getText().trim();
+        String password = new String(passwordField.getPassword()).trim();
+        String role = roleCmb.getSelectedItem().toString().trim();
+        String status = statusCmb.getSelectedItem().toString().trim();
+
+        if (firstName.isEmpty() || middleName.isEmpty() || lastName.isEmpty()
+                || username.isEmpty() || password.isEmpty() || role.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please fill in all required fields.");
+            return;
+        }
+
+        String sql = "INSERT INTO users (first_name, middle_name, last_name, username, password, role, status, created_at) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement pstUsers = con.prepareStatement(sql)) {
+            pstUsers.setString(1, firstName);
+            pstUsers.setString(2, middleName);
+            pstUsers.setString(3, lastName);
+            pstUsers.setString(4, username);
+            pstUsers.setString(5, password);
+            pstUsers.setString(6, role);
+            pstUsers.setString(7, status);
+            pstUsers.setTimestamp(8, new Timestamp(System.currentTimeMillis()));
+
+            pstUsers.executeUpdate();
+
+            JOptionPane.showMessageDialog(this, "User added successfully.");
+            clearFields();
+            clearBtn.setText("Clear");
+            loadUsersToTable();
+            label.setText("Ready: Add mode");
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Add user error: " + ex.getMessage());
+        }
     }//GEN-LAST:event_addNewUserBtnActionPerformed
 
     private void editUserBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editUserBtnMouseClicked
@@ -390,12 +458,37 @@ public class UsersManagementScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_editUserBtnMouseClicked
 
     private void editUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editUserBtnActionPerformed
-        // TODO add your handling code here:
+        editMode = true;
+        rowLoaded = false;
+        selectedUserId = -1;
+
+        cancelBtn.setEnabled(true);   // Cancel
+        addNewUserBtn.setEnabled(false); // Add
+        updateBtn.setEnabled(false);   // Update
+        deleteBtn.setEnabled(false);   // Delete
+
+        userListTbl.setEnabled(true);
+        userListTbl.clearSelection();
+
+        clearBtn.setText("Clear");
+        label.setText("Edit mode: click a row to load user data.");
     }//GEN-LAST:event_editUserBtnActionPerformed
 
     private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
         UserSearch.searchUsers(userListTbl, searchField.getText());
     }//GEN-LAST:event_searchButtonMouseClicked
+
+    private void searchButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseEntered
+        searchButton.setBackground(new Color(255, 255, 204));
+    }//GEN-LAST:event_searchButtonMouseEntered
+
+    private void searchButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseExited
+        searchButton.setBackground(new Color(255, 181, 36));
+    }//GEN-LAST:event_searchButtonMouseExited
+
+    private void searchButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMousePressed
+        searchButton.setBackground(new Color(255, 181, 36));
+    }//GEN-LAST:event_searchButtonMousePressed
 
     private void firstNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_firstNameFieldActionPerformed
         // TODO add your handling code here:
@@ -405,35 +498,206 @@ public class UsersManagementScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_middleNameFieldActionPerformed
 
-    private void searchButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseEntered
-       searchButton.setBackground(new Color(255,255,204));
-    }//GEN-LAST:event_searchButtonMouseEntered
+    private void lastNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lastNameFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lastNameFieldActionPerformed
 
-    private void searchButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseExited
-       searchButton.setBackground(new Color(255,181,36));
-    }//GEN-LAST:event_searchButtonMouseExited
+    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchButtonActionPerformed
 
-    private void searchButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMousePressed
-          searchButton.setBackground(new Color(255,181,36));
-    }//GEN-LAST:event_searchButtonMousePressed
+    private void clearBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearBtnMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_clearBtnMouseClicked
 
-    private void clearFields(){
-         firstNameField.setText("");
-         middleNameField.setText("");
-         lastNameField.setText("");
-         usernameField.setText("");
-         passwordField.setText("");
-         roleCmb.setSelectedItem(0);
-         statusCmb.setSelectedItem(0);
-   }
-    
+    private void clearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBtnActionPerformed
+        if (rowLoaded) {
+            resetLoadedUserFields();
+            label.setText("Fields reset to original saved data.");
+            return;
+        }
+
+        clearFields();
+        label.setText("Fields cleared.");
+    }//GEN-LAST:event_clearBtnActionPerformed
+
+    private void updateBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateBtnMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_updateBtnMouseClicked
+
+    private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed
+        if (!editMode || !rowLoaded || selectedUserId == -1) {
+            JOptionPane.showMessageDialog(this, "Click Edit first, then select a user row.");
+            return;
+        }
+
+        Connection con = DatabaseConnection.dbConnection();
+
+        String firstName = firstNameField.getText().trim();
+        String middleName = middleNameField.getText().trim();
+        String lastName = lastNameField.getText().trim();
+        String username = usernameField.getText().trim();
+        String password = new String(passwordField.getPassword()).trim();
+        String role = roleCmb.getSelectedItem().toString().trim();
+        String status = statusCmb.getSelectedItem().toString().trim();
+
+        if (firstName.isEmpty() || middleName.isEmpty() || lastName.isEmpty()
+                || username.isEmpty() || role.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please fill in all required fields.");
+            return;
+        }
+
+        String sql;
+        boolean updatePassword = !password.isEmpty();
+
+        if (updatePassword) {
+            sql = "UPDATE users SET first_name = ?, middle_name = ?, last_name = ?, username = ?, password = ?, role = ?, status = ?, updated_at = ? WHERE user_id = ?";
+        } else {
+            sql = "UPDATE users SET first_name = ?, middle_name = ?, last_name = ?, username = ?, role = ?, status = ?, updated_at = ? WHERE user_id = ?";
+        }
+
+        try (PreparedStatement pst = con.prepareStatement(sql)) {
+            if (updatePassword) {
+                pst.setString(1, firstName);
+                pst.setString(2, middleName);
+                pst.setString(3, lastName);
+                pst.setString(4, username);
+                pst.setString(5, password);
+                pst.setString(6, role);
+                pst.setString(7, status);
+                pst.setTimestamp(8, new Timestamp(System.currentTimeMillis()));
+                pst.setInt(9, selectedUserId);
+            } else {
+                pst.setString(1, firstName);
+                pst.setString(2, middleName);
+                pst.setString(3, lastName);
+                pst.setString(4, username);
+                pst.setString(5, role);
+                pst.setString(6, status);
+                pst.setTimestamp(7, new Timestamp(System.currentTimeMillis()));
+                pst.setInt(8, selectedUserId);
+            }
+
+            pst.executeUpdate();
+
+            JOptionPane.showMessageDialog(this, "User updated successfully.");
+            returnToAddMode();
+            loadUsersToTable();
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Update user error: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_updateBtnActionPerformed
+
+    private void deleteBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteBtnMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_deleteBtnMouseClicked
+
+    private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
+        if (!editMode || !rowLoaded || selectedUserId == -1) {
+            JOptionPane.showMessageDialog(this, "Click Edit first, then select a user row.");
+            return;
+        }
+
+        int confirm = JOptionPane.showConfirmDialog(
+                this,
+                "Delete this user?",
+                "Confirm Delete",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (confirm != JOptionPane.YES_OPTION) {
+            return;
+        }
+
+        Connection con = DatabaseConnection.dbConnection();
+
+        String sql = "DELETE FROM users WHERE user_id = ?";
+
+        try (PreparedStatement pst = con.prepareStatement(sql)) {
+            pst.setInt(1, selectedUserId);
+            pst.executeUpdate();
+
+            JOptionPane.showMessageDialog(this, "User deleted successfully.");
+            returnToAddMode();
+            loadUsersToTable();
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Delete user error: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_deleteBtnActionPerformed
+
+    private void clearFields() {
+        firstNameField.setText("");
+        middleNameField.setText("");
+        lastNameField.setText("");
+        usernameField.setText("");
+        passwordField.setText("");
+        roleCmb.setSelectedIndex(0);
+        statusCmb.setSelectedIndex(0);
+    }
+
+    private void resetLoadedUserFields() {
+        firstNameField.setText(originalFirstName);
+        middleNameField.setText(originalMiddleName);
+        lastNameField.setText(originalLastName);
+        usernameField.setText(originalUsername);
+        passwordField.setText(originalPassword);
+        roleCmb.setSelectedItem(originalRole);
+        statusCmb.setSelectedItem(originalStatus);
+    }
+
+    private void setupTableRowClick() {
+        userListTbl.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (!editMode) {
+                    JOptionPane.showMessageDialog(null, "Click Edit first before selecting a row.");
+                    userListTbl.clearSelection();
+                    return;
+                }
+
+                int row = userListTbl.getSelectedRow();
+                if (row == -1) {
+                    return;
+                }
+
+                DefaultTableModel model = (DefaultTableModel) userListTbl.getModel();
+
+                selectedUserId = Integer.parseInt(model.getValueAt(row, 0).toString());
+
+                originalFirstName = model.getValueAt(row, 1).toString();
+                originalMiddleName = model.getValueAt(row, 2).toString();
+                originalLastName = model.getValueAt(row, 3).toString();
+                originalUsername = model.getValueAt(row, 4).toString();
+                originalRole = model.getValueAt(row, 5).toString();
+                originalStatus = model.getValueAt(row, 6).toString();
+
+                firstNameField.setText(originalFirstName);
+                middleNameField.setText(originalMiddleName);
+                lastNameField.setText(originalLastName);
+                usernameField.setText(originalUsername);
+                roleCmb.setSelectedItem(originalRole);
+                statusCmb.setSelectedItem(originalStatus);
+
+                passwordField.setText(""); // do not load old password unless you really store plain text
+                originalPassword = "";
+
+                rowLoaded = true;
+                updateBtn.setEnabled(true); // Update
+                deleteBtn.setEnabled(true); // Delete
+                clearBtn.setText("Reset"); // Clear button becomes Reset
+                label.setText("User row loaded. You may now update or reset.");
+            }
+        });
+    }
+
     private void loadUsersToTable() {
         Connection con = DatabaseConnection.dbConnection();
         DefaultTableModel dtm = (DefaultTableModel) userListTbl.getModel();
         dtm.setRowCount(0);
 
         String sql = "SELECT user_id, first_name, middle_name, last_name, username, role, status, created_at, updated_at FROM users ORDER BY user_id ASC";
-        
 
         try (PreparedStatement pst = con.prepareStatement(sql); ResultSet rs = pst.executeQuery()) {
 
@@ -455,6 +719,32 @@ public class UsersManagementScreen extends javax.swing.JFrame {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Load error: " + ex.getMessage());
         }
+    }
+
+    private void returnToAddMode() {
+        editMode = false;
+        rowLoaded = false;
+        selectedUserId = -1;
+
+        originalFirstName = "";
+        originalMiddleName = "";
+        originalLastName = "";
+        originalUsername = "";
+        originalPassword = "";
+        originalRole = "";
+        originalStatus = "";
+
+        addNewUserBtn.setEnabled(true);
+        updateBtn.setEnabled(false);
+        cancelBtn.setEnabled(false);
+        deleteBtn.setEnabled(false);
+
+        userListTbl.setEnabled(false);
+        userListTbl.clearSelection();
+
+        clearBtn.setText("Clear");
+        clearFields();
+        label.setText("Ready: Add mode");
     }
 
     /**
@@ -497,27 +787,31 @@ public class UsersManagementScreen extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addNewUserBtn;
-    private javax.swing.JButton addUserBtn2;
-    private javax.swing.JLabel backIcon;
+    private javax.swing.JButton cancelBtn;
+    private javax.swing.JButton clearBtn;
+    private javax.swing.JButton deleteBtn;
     private javax.swing.JButton editUserBtn;
     private javax.swing.JTextField firstNameField;
     private javax.swing.JDialog jDialog1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel label;
     private javax.swing.JTextField lastNameField;
     private javax.swing.JTextField middleNameField;
     private javax.swing.JPasswordField passwordField;
@@ -525,6 +819,7 @@ public class UsersManagementScreen extends javax.swing.JFrame {
     private javax.swing.JButton searchButton;
     private javax.swing.JTextField searchField;
     private javax.swing.JComboBox<String> statusCmb;
+    private javax.swing.JButton updateBtn;
     private javax.swing.JTable userListTbl;
     private javax.swing.JTextField usernameField;
     // End of variables declaration//GEN-END:variables
